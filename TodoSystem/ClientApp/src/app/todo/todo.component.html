@@ -1,0 +1,133 @@
+
+<form [formGroup]="todoForm" (ngSubmit)="onCreate(todoForm)">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label class="form-check-label"> Name</label>
+        <input class="form-control"
+               formControlName="name"
+               placeholder="Name"
+               [ngClass]="{ 'is-invalid': submitted && tForm.name.errors }" />
+        <div *ngIf="submitted && tForm.name.errors" class="invalid-feedback">
+          <div *ngIf="tForm.name.errors.required">Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-check-label"> Due Date </label>
+        <input class="form-control"
+               type="date"
+               formControlName="date"
+               placeholder="Date"
+               [ngClass]="{ 'is-invalid': submitted && tForm.date.errors }" />
+        <div *ngIf="submitted && tForm.date.errors" class="invalid-feedback">
+          <div *ngIf="tForm.date.errors.required">Due Date is required</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Create</button>
+    </div>
+  </div>
+</form>
+
+<p>Pending Tasks</p>
+
+<table class='table table-striped pending-tasks' aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let todo of todoView.PendingTasks">
+      <td>{{ todo.id }}</td>
+      <td>{{ todo.name }}</td>
+      <td>{{ todo.date | date: 'MM/dd/yyyy' }}</td>
+      <td>{{ todo.status == 1 ? 'Pending' : 'Overdue' }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="editPendingTodo(todo.id)">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Overdue Tasks</p>
+
+<table class='table table-striped overdue-tasks' aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let todo of todoView.OverdueTasks">
+      <td>{{ todo.id }}</td>
+      <td>{{ todo.name }}</td>
+      <td>{{ todo.date | date: 'MM/dd/yyyy' }}</td>
+      <td>{{ todo.status == 1 ? 'Pending' : 'Overdue' }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="editOverdueTodo(todo.id)">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Creates the bootstrap modal where the edit Form will appear -->
+<div [style.display]="showModal ? 'block' : 'none'" class="modal" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Edit Todo</h4>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm" (ngSubmit)="onEdit(editForm)">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-check-label">Name</label>
+                <input type="text"
+                       formControlName="name"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && eForm.name.errors }" />
+                <div *ngIf="submitted && eForm.name.errors" class="invalid-feedback">
+                  <div *ngIf="eForm.name.errors.required">Name is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-check-label">Due Date</label>
+                <input type="date"
+                       formControlName="date"
+                       class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && eForm.date.errors }" />
+                <div *ngIf="submitted && eForm.date.errors" class="invalid-feedback">
+                  <div *ngIf="eForm.date.errors.required">Date is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-check-label">Is Completed </label>
+                <input type="checkbox"
+                       formControlName="completed"
+                       class="form-check-input" />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal" (click)="hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

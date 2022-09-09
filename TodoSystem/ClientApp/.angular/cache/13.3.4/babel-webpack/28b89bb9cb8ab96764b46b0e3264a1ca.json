@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class TodoItem {\n  constructor(id, name, date, status) {\n    this.id = id;\n    this.name = name;\n    this.date = date;\n    this.status = status;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}
